@@ -4,6 +4,7 @@
 
 * Ensure that you have a configured AWS account
 * Ensure that [AWS-CLI](https://aws.amazon.com/cli/) is installed and configured for terraform usage
+  * Ensure `[testudo]` exists within the file `~/.aws/credentials`&#x20;
 
 ## Installation
 
@@ -12,24 +13,33 @@ Ensure you edit the `OPERATOR_IPS` and `ROE_IPS` variables within the `vars.tf` 
 ```
 git clone https://github.com/0xFFaraday/Testudo.git && cd Testudo
 
+# Initialize project 
 terraform -chdir=provider/aws init
-# If no issues, lets plan this terraform project
 
-terraform -chdir=provider/aws plan
-# If these settings look good, we can then deploy
+# Create virtual environment
+python3 -m venv .testudo-env
 
-terraform -chdir=provider/aws apply --auto-approve
-# If successful, you will be able to see the output of the public IPs to access via SSH / RDP
+# Active virtual environment
+source .testudo-env/bin/activate
+
+# Download and install needed packages
+pip install -r requirements.txt
+
+# Time to rock and roll!
+python testudo.py --help
 ```
 
-## Connecting / Ansible Provisioning
+## Deployment
 
 ```
-# Ansible controller
-ssh -i ./linux-key-pair.pem ubuntu@ANSIBLE_PUBLIC_IP
+# Deploy infrastructure
+python testudo.py -pt -v
 
-# Provision with ansible
-cd ~/ansible && ansible-playbook -i data/inventory main.yml
+# Retrive status of machines
+python testudo.py -s
+
+# Run main ansible playbook
+python testudo.py -pa -v
 ```
 
 Now choose a beverage of your choice and wait. Once Ansible is finished, you and your team will have infrastructure ready to go for your operation! It is highly recommended to change all the default credentials since provisioning is now finished.

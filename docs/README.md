@@ -8,6 +8,7 @@ By default, Testudo configures the following:
 * One Ubuntu jumpbox
 * One Ubuntu redirector
 * One Ubuntu C2 server
+* One Ansible Controller
 
 ## What this project does:
 
@@ -20,3 +21,7 @@ By default, Testudo configures the following:
 * Explains how C2 servers and redirectors work
 * Teach AWS infrastructure and its usage
 * Teach Ansible and its usage
+
+## Disclaimer
+
+Testudo is purely made for educational purposes. Testudo's maintainers are not responsible for its usage.
