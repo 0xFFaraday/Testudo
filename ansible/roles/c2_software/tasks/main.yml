@@ -1,0 +1,35 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install common packages for C2s
+  apt:
+    name:
+      - unzip
+      - openjdk-11-jre-headless
+    state: present
+
+- name: Upload C2 setup scripts
+  ansible.builtin.copy:
+    src: "/home/{{ ansible_user }}/c2-setup-scripts"
+    dest: "/home/{{ ansible_user }}/"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Gather C2 setup scripts
+  ansible.builtin.find:
+    paths: "/home/{{ ansible_user }}/c2-setup-scripts"
+    file_type: file
+    use_regex: yes
+    patterns:
+    - ".*\\.sh$"
+  register: setup_scripts
+
+- name: Add proper perms to C2 setup scripts
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0770'
+  with_items: "{{ setup_scripts.files }}"
+  when: setup_scripts.matched > 0

@@ -1,0 +1,14 @@
+---
+# Load datas
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize linux jumpbox software
+  hosts: jumpboxes_linux
+  roles:
+  - { role: 'settings/linux_keys', tags: 'linux_keys' }
+  - { role: 'lin_software', tags: 'lin_jumpbox'}
+  vars:
+    common_repos: "{{lab.software['linux-jumpboxes'].repos}}"

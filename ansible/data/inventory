@@ -1,0 +1,51 @@
+; ubuntu ansible provisioner (localhost connection)
+AP-01 ansible_host=localhost dict_key=ap-01 ansible_user=ubuntu
+
+; ubuntu redirectors (ssh connection)
+RD-01 ansible_host=172.16.1.10 dict_key=rd-01 ansible_user=ubuntu
+
+; ubuntu c2s (ssh connection)
+C2-01 ansible_host=172.16.2.10 dict_key=c2-01 ansible_user=ubuntu
+
+; windows jumpbox (winrm connection)
+JBW-01 ansible_host=172.16.3.10 dict_key=jbw-01
+
+; ubuntu jumpboxes (ssh connection)
+JBL-01 ansible_host=172.16.3.20 dict_key=jbl-01 ansible_user=ubuntu
+
+[jumpboxes_windows:vars]
+ansible_user=ansible
+ansible_password=windowsJumpb0xTime!
+ansible_connection=winrm
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+ansible_winrm_port=5986
+ansible_winrm_operation_timeout_sec=400
+ansible_winrm_read_timeout_sec=500
+
+[lab]
+C2-01
+RD-01
+JBL-01
+JBW-01
+
+[ubuntu_servers]
+C2-01
+RD-01
+AP-01
+JBL-01
+
+[c2_servers]
+C2-01
+
+[redirectors]
+RD-01
+
+[ansible_provisioner]
+AP-01
+
+[jumpboxes_linux]
+JBL-01
+
+[jumpboxes_windows]
+JBW-01

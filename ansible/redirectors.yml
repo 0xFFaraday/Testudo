@@ -1,0 +1,12 @@
+---
+# Load datas
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize Redirector software
+  hosts: redirectors
+  become: yes
+  roles:
+  - { role: 'rd_software', tags: 'rd_software' }

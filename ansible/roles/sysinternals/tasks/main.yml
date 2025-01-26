@@ -1,0 +1,22 @@
+- name: Create a directory for tool downloads
+  win_file:
+    path: C:\Tools
+    state: directory
+
+- name: Check that sysinternals exists
+  win_stat:
+    path: C:\Tools\sysinternals
+  register: sysinternals_directory
+
+- name: Download the archive
+  win_get_url:
+      url: "https://download.sysinternals.com/files/SysinternalsSuite.zip"
+      dest: 'C:\Tools\sysinternalsSuite.zip'
+  when: not sysinternals_directory.stat.exists
+
+- name: Unzip sysinternals archive if directory doesn't exist
+  community.windows.win_unzip:
+    src: C:\Tools\sysinternalsSuite.zip
+    dest: C:\Tools\sysinternals
+    creates: C:\Tools\sysinternals
+    delete_archive: true

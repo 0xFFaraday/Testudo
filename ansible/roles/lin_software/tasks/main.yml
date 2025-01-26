@@ -1,0 +1,24 @@
+- name: Update apt cache
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install common packages
+  become: yes
+  apt:
+    name:
+      - nmap
+      - git
+      - pipx
+    state: present
+
+- name: Download common repos
+  ansible.builtin.git:
+    repo: "{{item.repo_url}}"
+    dest: "/home/ubuntu/tools/{{item.name}}"
+  loop: "{{common_repos}}"
+
+- name: Install NetExec via pipx
+  ansible.builtin.shell: |
+    pipx ensurepath
+    pipx install git+https://github.com/Pennyw0rth/NetExec

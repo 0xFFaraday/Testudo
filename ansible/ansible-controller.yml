@@ -1,0 +1,37 @@
+- name: Initial configuration for ansible control node
+  hosts: ansible_provisioner
+  connection: local
+  become: yes
+  run_once: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install common packages
+      apt:
+        name:
+          - htop
+          - unzip
+        state: present
+
+    - name: Ensure any missing dependencies are installed
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - build-essential
+
+    - name: Clean up unnecessary packages
+      apt:
+        autoremove: yes
+        autoclean: yes
+
+    - name: Add proper perms to SSH keys
+      ansible.builtin.file:
+        path: "{{ item }}"
+        owner: "{{ ansible_user  }}"
+        group: "{{ ansible_user  }}"
+        mode: '0600'
+      with_fileglob:
+        - "/home/{{ ansible_user }}/.ssh/*id_rsa*"

@@ -1,0 +1,40 @@
+---
+# Source: https://github.com/mttaggart/seclab/blob/aba44f13a40493060efe5f661680d5c80c51df76/Ansible/roles/sysmon/tasks/main.yml
+- name: Check if Sysmon Exists
+  ansible.windows.win_service_info:
+    name: Sysmon64
+  register: sysmon_info
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Download Sysmon
+  ansible.windows.win_get_url:
+    url: https://live.sysinternals.com/Sysmon64.exe
+    dest: "C:\\Users\\{{ ansible_user }}\\Downloads\\Sysmon64.exe"
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Uninstall Sysmon
+  ansible.windows.win_shell: .\Sysmon64.exe -accepteula -u
+  args:
+    chdir: C:\Users\{{ ansible_user }}\Downloads
+  when: ansible_facts["os_family"] == "Windows" and sysmon_info["exists"] 
+
+- name: Download Sysmon Config
+  ansible.windows.win_get_url:
+    url: https://raw.githubusercontent.com/olafhartong/sysmon-modular/master/sysmonconfig.xml
+    dest: "C:\\Users\\{{ ansible_user }}\\Downloads\\sysmonconfig-export.xml"
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Install Sysmon as a Service
+  ansible.windows.win_shell: .\Sysmon64.exe -accepteula -i .\sysmonconfig-export.xml
+  args:
+    chdir: C:\Users\{{ ansible_user }}\Downloads
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Remove Sysmon Install Files
+  ansible.windows.win_file:
+    path: "C:\\Users\\{{ ansible_user }}\\Downloads\\{{ item }}"
+    state: absent
+  loop: "{{ sysmon_files }}"
+  vars:
+    sysmon_files: ["Sysmon64.exe", "sysmonconfig-export.xml"]
+  when: ansible_facts["os_family"] == "Windows"

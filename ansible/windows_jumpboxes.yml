@@ -1,0 +1,12 @@
+---
+# Load datas
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize Windows Jumpbox Software
+  hosts: jumpboxes_windows
+  roles:
+  - { role: 'sysinternals', tags: 'sysinternals' }
+  - { role: 'sysmon', tags: 'sysmon'}

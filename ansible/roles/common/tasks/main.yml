@@ -1,0 +1,34 @@
+- name: Upgrade module PowerShellGet to fix accept license issue on last windows ansible version
+  ansible.windows.win_shell: |
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Install-PackageProvider -Name NuGet -Force
+    Install-Module PowerShellGet -Force
+
+- name: Windows | Check for ComputerManagementDsc Powershell module
+  win_psmodule:
+    name: ComputerManagementDsc
+    state: present
+
+- name: Windows | Enable Remote Desktop
+  ansible.windows.win_dsc:
+    resource_name: RemoteDesktopAdmin
+    IsSingleInstance : 'yes'
+    Ensure: present
+    UserAuthentication: Secure
+
+- name: Windows | Check for xNetworking Powershell module
+  win_psmodule:
+    name: xNetworking
+    state: present
+
+- name: Firewall | Allow RDP through Firewall
+  ansible.windows.win_dsc:
+    resource_name: xFirewall
+    Name: "Administrator access for RDP (TCP-In)"
+    Ensure: present
+    Enabled: True
+    Profile: ["Domain", "Private"]
+    Direction: "Inbound"
+    Localport: "3389"
+    Protocol: "TCP"
+    Description: "Opens the listener port for RDP"

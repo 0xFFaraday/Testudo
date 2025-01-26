@@ -1,0 +1,13 @@
+- name: Print loaded hostname and password
+  ansible.builtin.debug:
+    msg: |
+      local_admin_password: {{local_admin_password}} hostname: {{hostname}}
+# https://www.baeldung.com/linux/set-or-change-system-hostname
+# https://www.reddit.com/r/ansible/comments/w2ut1v/set_hostnames_from_inventory/
+- name: set FQDN to match inventory
+  ansible.builtin.command: "/usr/bin/hostnamectl --static set-hostname {{hostname}}"
+  changed_when: false
+
+- name: set pretty hostname
+  ansible.builtin.command: "/usr/bin/hostnamectl --pretty set-hostname {{hostname}}"
+  changed_when: false

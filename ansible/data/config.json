@@ -1,0 +1,46 @@
+{
+    "lab": {
+        "hosts": {
+            "c2-01": {
+                "hostname": "C2-01",
+                "type": "c2",
+                "local_admin": "ubuntu",
+                "local_admin_password": "c2isTooC00lForYou!"
+            },
+            "rd-01": {
+                "hostname": "RD-01",
+                "type": "redirector",
+                "local_admin": "ubuntu",
+                "local_admin_password": "r3directingAllTh0sePackets!"
+            },
+            "ap-01": {
+                "hostname": "AP-01",
+                "type": "ansible-controller",
+                "local_admin": "ubuntu",
+                "local_admin_password": "ansibleD3ployingTh3seH0sts!"
+            },
+            "jbw-01": {
+                "hostname": "JBW-01",
+                "type": "jumpbox-win",
+                "local_admin": "operator",
+                "local_admin_password": "windowsJumpb0xTime!"
+            },
+            "jbl-01": {
+                "hostname": "JBL-01",
+                "type": "jumpbox-lin",
+                "local_admin": "ubuntu",
+                "local_admin_password": "linuxJumpb0xTime!"
+            }
+        },
+        "software":{
+            "linux-jumpboxes": {
+                "repos": [
+                    {"name": "mimikatz", "repo_url": "https://github.com/ParrotSec/mimikatz.git"},
+                    {"name": "ghostpack", "repo_url": "https://github.com/r3motecontrol/Ghostpack-CompiledBinaries"},
+                    {"name": "powersploit", "repo_url": "https://github.com/PowerShellMafia/PowerSploit.git"},
+                    {"name": "godpotato", "repo_url": "https://github.com/BeichenDream/GodPotato.git"}
+                ]
+            }
+        }
+    }
+}

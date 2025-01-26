@@ -1,0 +1,12 @@
+---
+# Load datas
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize C2 Software
+  hosts: c2_servers
+  become: yes
+  roles:
+  - { role: 'c2_software', tags: 'c2_software' }

@@ -1,0 +1,10 @@
+- name: "Read data files"
+  hosts: all
+  vars_files:
+    - "./data/config.json"
+  tasks:
+    - name: save the JSON data to a Variable as a Fact
+      set_fact:
+        lab: "{{lab}}"
+        cacheable: yes
+      run_once: true

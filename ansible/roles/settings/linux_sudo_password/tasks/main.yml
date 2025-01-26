@@ -1,0 +1,5 @@
+- name: "Changing user's sudo password"
+  become: true
+  ansible.builtin.user:
+    name: "{{local_admin}}"
+    password: "{{ local_admin_password | password_hash('sha512') }}"

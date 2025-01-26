@@ -1,0 +1,16 @@
+---
+- import_playbook: data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize Windows Jumpboxes
+  hosts: jumpboxes_windows
+  roles:
+  - { role: 'common', tags: 'common'}
+  - { role: 'settings/windows_hostname', tags: 'hostname' }
+  - { role: 'settings/windows_admin_password', tags: 'admin_password'}
+  vars:
+    local_admin: "{{lab.hosts[dict_key].local_admin}}"
+    local_admin_password: "{{lab.hosts[dict_key].local_admin_password}}"
+    hostname: "{{lab.hosts[dict_key].hostname}}"

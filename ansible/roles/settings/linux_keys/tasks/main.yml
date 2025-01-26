@@ -1,0 +1,17 @@
+- name: Gather SSH files on jumpbox
+  ansible.builtin.find:
+    paths: "/home/{{ ansible_user }}/.ssh/"
+    file_type: file
+    # use_regex: yes
+    # patterns:
+    #   - ".*id_rsa.*"
+  register: ssh_files
+
+- name: Add proper perms to SSH files
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0600'
+  with_items: "{{ ssh_files.files }}"
+  when: ssh_files.matched > 0

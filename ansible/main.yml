@@ -1,0 +1,25 @@
+---
+# Prepare provisioning host
+- import_playbook: ansible-controller.yml
+
+# Load data for all hosts
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "../ansible/data/"
+  tags: 'data'
+
+# Prepare servers for initial config
+- import_playbook: initial_ubuntu.yml
+- import_playbook: initial_windows.yml
+
+# Install packages and scripts required for redirectors
+- import_playbook: redirectors.yml
+
+# Install packages and scripts required for C2s
+- import_playbook: c2-servers.yml
+
+# Install software used by Ubuntu Jumpboxes
+- import_playbook: linux_jumpboxes.yml
+
+# Install software used by Windows Jumpboxes
+- import_playbook: windows_jumpboxes.yml

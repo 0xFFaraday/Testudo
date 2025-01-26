@@ -1,0 +1,18 @@
+---
+# Load datas
+- import_playbook: ../ansible/data.yml
+  vars:
+    data_path: "./data/"
+  tags: 'data'
+
+- name: Initialize Ubuntu Servers
+  hosts: ubuntu_servers
+  become: yes
+  roles:
+  - { role: 'settings/linux_sudo_password', tags: 'admin_password' }
+  - { role: 'settings/linux_hosts', tags: 'hosts' }
+  - { role: 'settings/linux_hostname', tags: 'hostname' }
+  vars:
+    local_admin: "{{lab.hosts[dict_key].local_admin}}"
+    local_admin_password: "{{lab.hosts[dict_key].local_admin_password}}"
+    hostname: "{{lab.hosts[dict_key].hostname}}"
