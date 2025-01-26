@@ -42,7 +42,7 @@ git clone https://github.com/0xFFaraday/Testudo.git && cd Testudo
 terraform -chdir=provider/aws init
 
 # Create virtual environment
-python3 venv .testudo-env
+python3 -m venv .testudo-env
 
 # Active virtual environment
 source .testudo-env/bin/activate
