@@ -58,5 +58,5 @@ Now you should be able to use RDP with the specified credentials within `ansible
 
 ## AWS Diagram
 
-<figure><img src=".gitbook/assets/Testudo-AWS.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Testudo-AWS.png" alt=""><figcaption></figcaption></figure>
 
