@@ -9,6 +9,7 @@ By default, Testudo configures the following:
 - One Ubuntu jumpbox
 - One Ubuntu redirector
 - One Ubuntu C2 server
+- One Ansible Controller
 
 > If there is a need to add more machines to this environment, please read the documentation [HERE](https://testudo.gitbook.io/wiki/expanding-testudo).
 
@@ -65,7 +66,11 @@ python testudo.py -s
 
 # Run main ansible playbook
 python testudo.py -pa -v
+```
 
+### Destroy Infrastructure
+
+```
 # Destroy infrastructure
 python testudo.py -d -v
 ```
@@ -73,6 +78,17 @@ python testudo.py -d -v
 ### Final Configuration
 
 Now you should be able to use RDP with the specified credentials within `ansible/data/config.json` or SSH directly to the linux jumpbox with the key `linux-key-pair.pem` to finish configuring your team's redirectors and C2 servers.
+
+#### C2 Installer
+
+Testudo also provides a installer script located at `~/c2-setup-scripts/setup.sh` on all deployed C2 servers to install one of the following C2 servers:
+- [Empire](https://github.com/BC-SECURITY/Empire)
+- [Sliver](https://github.com/BishopFox/sliver)
+- [Havoc](https://github.com/HavocFramework/Havoc)
+
+This script is recommended to be used after the environment is provided and provisioned.
+
+For anything that might not be covered within this README, please go to the [documentation](https://testudo.gitbook.io/wiki) for further information.
 
 ## Disclaimer
 
